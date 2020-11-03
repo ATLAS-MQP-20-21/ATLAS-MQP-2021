@@ -25,9 +25,11 @@ devel_isolated/
 *.dox
 *.wikidoc
 
-# eclipse stuff
+# IDE stuff
 .project
 .cproject
+.idea
+.vscode
 
 # qcreator stuff
 CMakeLists.txt.user
