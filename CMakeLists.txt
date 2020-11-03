@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ATLAS_MQP_21)
+project(ATLAS_MQP_21 CXX)
+#set_target_properties(ATLAS-MQP-2021 PROPERTIES LINKER_LANGUAGE CXX)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -72,6 +73,14 @@ find_package(catkin REQUIRED COMPONENTS
 #   Action2.action
 # )
 
+set(HEADER_FILES
+  include/dummy.h
+)
+
+set(SOURCE_FILES
+  dummy.cpp
+)
+
 # Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
@@ -109,14 +118,13 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
- LIBRARIES ATLAS_MQP_21
+ LIBRARIES 
  CATKIN_DEPENDS roscpp rospy std_msgs tough_common tough_controller_interface tough_footstep tough_moveit_planners tough_perception_common message_runtime 
  DEPENDS system_lib
 )
 
 ###########
-## Build ##
-###########
+## Build #############
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
@@ -178,7 +186,7 @@ target_link_libraries(${PROJECT_NAME}  ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS gain_tuner frame_publisher dhupchik test_upper_body test_shadow_legs
+install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
