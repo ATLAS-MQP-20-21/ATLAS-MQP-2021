@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ATLAS_MQP_21 CXX)
+project(ATLAS_MQP_21)
 #set_target_properties(ATLAS-MQP-2021 PROPERTIES LINKER_LANGUAGE CXX)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -73,19 +73,19 @@ find_package(catkin REQUIRED COMPONENTS
 #   Action2.action
 # )
 
-set(HEADER_FILES
-  include/dummy.h
-)
+# set(HEADER_FILES
+#   include/dummy.h
+# )
 
-set(SOURCE_FILES
-  dummy.cpp
-)
+# set(SOURCE_FILES
+#   dummy.cpp
+# )
 
 # Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -131,13 +131,19 @@ catkin_package(
 
 include_directories(${catkin_INCLUDE_DIRS} include)
 
-## Declare a C++ library
-add_library(${PROJECT_NAME}
-  # src/filter.cpp
-)
+# ## Declare a C++ library
+# add_library(${PROJECT_NAME}
+#   # src/filter.cpp
+# )
 
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}  ${catkin_LIBRARIES})
+# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# target_link_libraries(${PROJECT_NAME}  ${catkin_LIBRARIES})
+
+
+## Copy these 3 lines for any executable you want to compile
+add_executable( dummy dummy.cpp)
+add_dependencies(dummy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(dummy ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -186,16 +192,16 @@ target_link_libraries(${PROJECT_NAME}  ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(TARGETS ${PROJECT_NAME}
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
-## Mark cpp header files for installation
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-  PATTERN ".svn" EXCLUDE)
+# ## Mark cpp header files for installation
+# install(DIRECTORY launch/
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+#   PATTERN ".svn" EXCLUDE)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
