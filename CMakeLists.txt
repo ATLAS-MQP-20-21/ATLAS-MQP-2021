@@ -141,9 +141,11 @@ include_directories(${catkin_INCLUDE_DIRS} include)
 
 
 ## Copy these 3 lines for any executable you want to compile
-add_executable( dummy dummy.cpp)
+add_executable( dummy dummy.cpp src/PointCloudHandlerNode.cpp src/PointCloudHandlerNode.h src/MapperNode.cpp src/MapperNode.h)
 add_dependencies(dummy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(dummy ${catkin_LIBRARIES})
+
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
