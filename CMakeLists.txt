@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  geometry_msgs
   message_generation
   tough_common
   # tough_stability
@@ -119,7 +120,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES 
- CATKIN_DEPENDS roscpp rospy std_msgs tough_common tough_controller_interface tough_footstep tough_moveit_planners tough_perception_common message_runtime 
+ CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs tough_common tough_controller_interface tough_footstep tough_moveit_planners tough_perception_common message_runtime 
  DEPENDS system_lib
 )
 
@@ -141,9 +142,9 @@ include_directories(${catkin_INCLUDE_DIRS} include)
 
 
 ## Copy these 3 lines for any executable you want to compile
-add_executable( dummy dummy.cpp src/PointCloudHandlerNode.cpp src/PointCloudHandlerNode.h src/MapperNode.cpp src/MapperNode.h)
-add_dependencies(dummy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(dummy ${catkin_LIBRARIES})
+add_executable( CoordinateTransformNode dummy.cpp src/PointCloudHandlerNode.cpp src/PointCloudHandlerNode.h src/MapperNode.cpp src/MapperNode.h)
+add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
 
 
 

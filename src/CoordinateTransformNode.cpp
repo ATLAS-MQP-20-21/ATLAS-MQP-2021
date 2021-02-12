@@ -4,7 +4,7 @@
 //
 
 #include <iostream>
-#include "ros/ros.h" 
+#include ros/ros.h
 #include "CoordinateTransformNode.h"
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Transform.h"
@@ -22,7 +22,8 @@ ros::NodeHandle n;
 
 
 
-void callback() {
+void makeRotMat() {
+    // do stuff when you get info about robot movement
 
 }
 
@@ -30,7 +31,7 @@ void callback() {
 int main(int argc, char *argv[])
 {
     ros::init(argc, argv, "location change");
-    ros::Subscriber location_Change = n.subscribe("geometry_msgs/PoseStamped", 1000, callback;
-    ros::Publisher wrt_Orign = n.publish()
+    ros::Subscriber location_Change = n.subscribe(geometry_msgs/PoseStamped', String, makeRotMat);
+    //ros::Publisher wrt_Orign = n.publish()
     ros::spin();
 }
