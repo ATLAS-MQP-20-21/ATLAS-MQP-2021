@@ -22,7 +22,7 @@ ros::NodeHandle n;
 
 
 
-void makeRotMat() {
+void dostuff() {
     // do stuff when you get info about robot movement
     
 }

@@ -5,7 +5,7 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Transform.h"
 
-/*find all includes (sensor messages as well)
+//find all includes (sensor messages as well)
 
 
 //initialize variables
@@ -33,4 +33,3 @@ int main(int argc, char *argv[])
     ros::spin();
 }
 
-*/

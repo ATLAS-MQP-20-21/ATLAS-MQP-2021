@@ -142,7 +142,15 @@ include_directories(${catkin_INCLUDE_DIRS} include)
 
 
 ## Copy these 3 lines for any executable you want to compile
-add_executable( CoordinateTransformNode dummy.cpp src/PointCloudHandlerNode.cpp src/PointCloudHandlerNode.h src/MapperNode.cpp src/MapperNode.h)
+add_executable(CoordinateTransformNode dummy.cpp src/CoordinateTransformNode.cpp src/CoordinateTransformNode.h)
+add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
+
+add_executable(PointCloudHandlerNode src/PointCloudHandlerNode.cpp src/PointCloudHandlerNode.h)
+add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
+
+add_executable(MapperNode src/MapperNode.cpp src/MapperNode.h)
 add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
 
