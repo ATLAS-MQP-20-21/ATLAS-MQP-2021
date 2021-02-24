@@ -147,12 +147,12 @@ add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${c
 target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
 
 add_executable(PointCloudHandlerNode src/PointCloudHandlerNode.cpp src/PointCloudHandlerNode.h)
-add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
+add_dependencies(PointCloudHandlerNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(PointCloudHandlerNode ${catkin_LIBRARIES})
 
 add_executable(MapperNode src/MapperNode.cpp src/MapperNode.h)
-add_dependencies(CoordinateTransformNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(CoordinateTransformNode ${catkin_LIBRARIES})
+add_dependencies(MapperNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(MapperNode ${catkin_LIBRARIES})
 
 
 
