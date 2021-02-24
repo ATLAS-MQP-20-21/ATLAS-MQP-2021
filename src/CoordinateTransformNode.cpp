@@ -22,13 +22,16 @@
 //set up Global Publishers?
 
 
-ros::NodeHandle n;
-ros::Publisher location_highlyillogical = n.advertise<std_msgs::Float64MultiArray>("chatter", 1000);
+
+ros::Publisher location_highlyillogical;
+ros::Subscriber location_Change;
 
 
 void makeRotMat(const geometry_msgs::PoseStamped& msg) {
     // do stuff when you get info about robot movement
     // extract x,y,z, and w (theta?) and create this matrix for multiplication: [cosw -sinw 0 x; sinw cosw 0 y; 0 0 1 z; 0 0 0 1]
+
+    ROS_INFO_STREAM("Recieved PoseStamped Message");
 
     std_msgs::Float64 x, y, z, q0, q1, q2, q3;
     
@@ -97,9 +100,17 @@ void makeRotMat(const geometry_msgs::PoseStamped& msg) {
 
 int main(int argc, char *argv[])
 {
-    ros::init(argc, argv, "location change");
-    ros::Subscriber location_Change = n.subscribe("geometry_msgs/PoseStamped", 1000, makeRotMat);
-    //ros::Publisher wrt_Orign = n.publish()
+    ROS_INFO_STREAM("CoordinateTransformNode");
+    ros::init(argc, argv, "location_change");
+
+    ros::NodeHandle n;
+    location_highlyillogical = n.advertise<std_msgs::Float64MultiArray>("chatter", 1000);
+
+    location_Change = n.subscribe("/move_base_simple/goal", 1000, makeRotMat);
+    //ros::Publisher wrt_Orign = n.publish();
+
+    ROS_INFO_STREAM("Starting Spin");
     ros::spin();
+    
 }
 
