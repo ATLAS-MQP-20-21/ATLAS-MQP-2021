@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     ros::init(argc, argv, "location_change");
 
     ros::NodeHandle n;
-    location_highlyillogical = n.advertise<std_msgs::Float64MultiArray>("chatter", 1000);
+    location_highlyillogical = n.advertise<std_msgs::Float64MultiArray>("/transformation_matrix", 1000);
 
     location_Change = n.subscribe("/move_base_simple/goal", 1000, makeRotMat);
     //ros::Publisher wrt_Orign = n.publish();
