@@ -24,49 +24,78 @@
 //find all includes (sensor messages as well)
 
 
-//initialize variables
-
-
 //set up Global Publishers/subscribers
 ros::Publisher pointcloud_publisher;
 ros::Subscriber pointcloud_listener;
 ros::Subscriber matrix_listener;
+sensor_msgs::PointCloud2 cloudout;
 
+//initialize variables
 std_msgs::Float64MultiArray transformationMatrix;
+bool doingStuff = false;
+bool haveTMatrix = false;
+
 
 
 void dostuff(const sensor_msgs::PointCloud2& cloudin) {
-    // do stuff when you get info about robot movement
+    
+    // do stuff when you get point cloud
     ROS_INFO_STREAM("Recieved Point Cloud message");
-
 
     // pcl::PCLPointCloud2 cloudin;
     // pcl_conversions::toPCL(msg, cloudin);
     // pcl::PCLPointCloud2 cloudout;
 
-    sensor_msgs::PointCloud2 cloudout; 
+    //sensor_msgs::PointCloud2 cloudout; //initialize this?
+
+    if(!haveTMatrix){
+        ROS_INFO_STREAM("No transformation matrix. Skipping this point cloud.");
+        return;
+    }
 
     Eigen::Matrix4f tmatrix = Eigen::Matrix4f::Identity();
 
+    //ROS_INFO_STREAM("1");
+
+    doingStuff = true;
     int i;
+
+    //dies here before printing 3
+
     for(i = 0; i < 16; i++){
-        tmatrix (i/4,i%4) = transformationMatrix.data[i];
+        ROS_INFO_STREAM("2");
+        tmatrix (i%4,i/4) = transformationMatrix.data[i]; 
+        ROS_INFO_STREAM("3");
     }
 
+    //ROS_INFO_STREAM("4");
+    doingStuff = false;
+
+    //ROS_INFO_STREAM("5");c
     pcl_ros::transformPointCloud(tmatrix, cloudin, cloudout);
 
-    //std_msgs::String newCloud = "Test";
-    //pointcloud_publisher.publish(newCloud);
+    //ROS_INFO_STREAM("6");
+    pointcloud_publisher.publish(cloudout);
+    //ROS_INFO_STREAM("6.1");
+
 }
 
-
+//save transformation matrix in global variable
 void setTransformationMatrix(const std_msgs::Float64MultiArray& msg) {
-    transformationMatrix = msg;
+
+    //ROS_INFO_STREAM("ryan is really cool guy still");
+    haveTMatrix = true;
+    //ROS_INFO_STREAM("di da di da didi dodo");
+    if(!doingStuff){
+        transformationMatrix = msg;
+        //ROS_INFO_STREAM("Gennert with rockstar hair");
+    }
 }
 
 int main(int argc, char *argv[])
 {
     ROS_INFO_STREAM("PointCloudHandlerNode");
+
     ros::init(argc, argv, "pointcloud_transformer");
 
     ros::NodeHandle n;
