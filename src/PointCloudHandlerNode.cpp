@@ -64,7 +64,7 @@ void dostuff(const sensor_msgs::PointCloud2& cloudin) {
 
     for(i = 0; i < 16; i++){
         ROS_INFO_STREAM("2");
-        tmatrix (i%4,i/4) = transformationMatrix.data[i]; 
+        tmatrix (i/4,i%4) = transformationMatrix.data[i]; 
         ROS_INFO_STREAM("3");
     }
 

@@ -15,14 +15,12 @@
 
 
 //set up Global Publishers?
-
-
-ros::NodeHandle n;
-
+ros::Publisher pointcloud_publisher;
+ros::Subscriber pointcloud_listener;
 
 
 
-void rotateCloud() {
+void combineClouds(const sensor_msgs::PointCloud2& newcloud) {
     // do stuff when you get info about robot movement
     
 }
@@ -30,8 +28,15 @@ void rotateCloud() {
 
 int main(int argc, char *argv[])
 {
-    //ros::init(argc, argv, "location change");
-    //ros::Subscriber location_Change = n.subscribe("geometry_msgs/PoseStamped", String, makeRotMat);
-    //ros::Publisher wrt_Orign = n.publish()
-    //ros::spin();
+    ROS_INFO_STREAM("MapperNode");
+
+    ros::init(argc, argv, "pointcloud_transformer");
+
+    ros::NodeHandle n;
+    //pointcloud_publisher = n.advertise<sensor_msgs::PointCloud2>("transformed_cloud", 1000); 
+
+    pointcloud_listener = n.subscribe("transformed_cloud", 1000, combineClouds);
+
+    ROS_INFO_STREAM("Starting Spin");
+    ros::spin();
 }
