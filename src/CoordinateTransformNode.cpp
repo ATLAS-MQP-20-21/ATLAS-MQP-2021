@@ -72,8 +72,11 @@ void makeRotMat(const geometry_msgs::PoseStamped& msg) {
     
     //std::vector<double> rotMat[16] = {r00,r01, r02, x, r10, r11,r12, y, r20, r21, r22, z, 0, 0, 0, 1};
     
-    float rotMat[16] = {-r00, -r01, -r02, -x.data, -r10, -r11, -r12, -y.data, -r20, -r21, -r22, -z.data, -0, -0, -0, 1};
-    
+    float rotMat[16] = {-r00, r01, r02, x.data, 
+                        r10, -r11, r12, y.data, 
+                        r20, r21, r22, z.data, 
+                        0, 0, 0, 1};
+    //didadiadididdodo didi da didi do dididididi da didi do 
     std_msgs::Float64MultiArray sentMatrix;
     sentMatrix.data.resize(16);
  

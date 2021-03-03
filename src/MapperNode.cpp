@@ -8,6 +8,7 @@
 #include "ros/ros.h" 
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Transform.h"
+#include "sensor_msgs/PointCloud2.h"
 //find all includes (sensor messages as well)
 
 
