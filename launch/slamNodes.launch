@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="ATLAS_MQP_21" name="CoordinateTransformNode" type ="CoordinateTransformNode.cpp"/>
+    <node pkg="ATLAS_MQP_21" name="PointCloudHandlerNode" type ="PointCloudHandlerNode.cpp"/>
+</launch>
