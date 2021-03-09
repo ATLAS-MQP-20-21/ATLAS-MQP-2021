@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 //yeah fortnite we bout to get down (get down!)
 
     ros::NodeHandle n;
-    pointcloud_publisher = n.advertise<sensor_msgs::PointCloud2>("cloud_in", 1000); 
+    pointcloud_publisher = n.advertise<sensor_msgs::PointCloud2>("filtered_cloud2", 1000); 
 
     pointcloud_listener = n.subscribe("transformed_cloud", 1000, addClouds);
 

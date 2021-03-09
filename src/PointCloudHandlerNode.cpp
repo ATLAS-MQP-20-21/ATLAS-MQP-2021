@@ -75,7 +75,7 @@ void dostuff(const sensor_msgs::PointCloud2& cloudin) {
     pcl_ros::transformPointCloud(tmatrix, cloudin, cloudout);
 
     //ROS_INFO_STREAM("6");
-    pointcloud_publisher.publish(cloudout);
+    pointcloud_publisher.publish(cloudin); //was cloudout
     //ROS_INFO_STREAM("6.1");
 
 }
