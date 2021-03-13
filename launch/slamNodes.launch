@@ -1,4 +1,12 @@
 <launch>
-    <node pkg="ATLAS_MQP_21" name="CoordinateTransformNode" type ="CoordinateTransformNode.cpp"/>
-    <node pkg="ATLAS_MQP_21" name="PointCloudHandlerNode" type ="PointCloudHandlerNode.cpp"/>
+
+    <include file="$(find tough_perception_common)/launch/octomap.launch"/>
+
+    <node pkg="viso2_ros" name="stereo_odometer" type ="stereo_odometer">
+        <remap from="stereo" to="multisense/camera"/>
+        <remap from="image" to="image_rect"/>
+        </node>
+    <node pkg="ATLAS_MQP_21" name="CoordinateTransformNode" type ="CoordinateTransformNode"/>
+    <node pkg="ATLAS_MQP_21" name="PointCloudHandlerNode" type ="PointCloudHandlerNode"/>
+    <node pkg="ATLAS_MQP_21" name="MapperNode" type ="MapperNode"/>
 </launch>

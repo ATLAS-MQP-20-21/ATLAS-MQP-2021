@@ -25,6 +25,7 @@ ros::Subscriber pointcloud_listener;
 
 void addClouds(const sensor_msgs::PointCloud2& newcloud) {
     // do stuff when you get info about robot movement
+    ROS_INFO_STREAM("Publishing");
     pointcloud_publisher.publish(newcloud);
     
 }
@@ -33,11 +34,9 @@ void addClouds(const sensor_msgs::PointCloud2& newcloud) {
 int main(int argc, char *argv[])
 {
     ROS_INFO_STREAM("MapperNode");
+    
 
     ros::init(argc, argv, "mapper_node");
-
-//number one victory royale 
-//yeah fortnite we bout to get down (get down!)
 
     ros::NodeHandle n;
     pointcloud_publisher = n.advertise<sensor_msgs::PointCloud2>("filtered_cloud2", 1000); 
