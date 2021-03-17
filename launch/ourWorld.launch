@@ -3,7 +3,7 @@
   
   <arg name="gzname" default="gazebo"/>
   <!-- <arg name="gzworld" default="'$(find ihmc_gazebo)/worlds/atlas_default.world'"/> -->
-  <arg name="gzworld" default="'$(find ATLAS_MQP_21)/worlds/gazebo_world_1.world'"/>
+  <arg name="gzworld" default="'$(find ATLAS_MQP_21)/worlds/museum_world.world'"/>
   <arg name="hand_suffix" default=""/>
   <arg name="extra_gazebo_args" default="-q -e ode" />
   <arg name="model_args" default="_v5" />
