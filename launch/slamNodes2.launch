@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="viso2_ros" name="stereo_odometer" type ="stereo_odometer">
+        <remap from="stereo" to="multisense/camera"/>
+        <remap from="image" to="image_rect"/>
+        </node>
+    <include file="$(find tough_perception_common)/launch/octomap.launch"/>
+    
+</launch>

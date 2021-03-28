@@ -154,6 +154,9 @@ add_executable(MapperNode src/MapperNode.cpp src/MapperNode.h)
 add_dependencies(MapperNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(MapperNode ${catkin_LIBRARIES})
 
+add_executable(Z_Filter src/Filtering/Z_Filter.cpp src/Filtering/Z_Filter.h)
+add_dependencies(Z_Filter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(Z_Filter ${catkin_LIBRARIES})
 
 
 ## Add cmake target dependencies of the library

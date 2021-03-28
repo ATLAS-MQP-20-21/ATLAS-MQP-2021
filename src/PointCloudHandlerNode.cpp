@@ -71,11 +71,11 @@ void dostuff(const sensor_msgs::PointCloud2& cloudin) {
     //ROS_INFO_STREAM("4");
     doingStuff = false;
 
-    //ROS_INFO_STREAM("5");c
-    pcl_ros::transformPointCloud(tmatrix, cloudout, cloudout);
+    //ROS_INFO_STREAM("5");
+    pcl_ros::transformPointCloud(tmatrix, cloudin, cloudout);
 
     //ROS_INFO_STREAM("6");
-    pointcloud_publisher.publish(cloudout); //was cloudout
+    pointcloud_publisher.publish(cloudin); //was cloudout
     //ROS_INFO_STREAM("6.1");
 
 }
