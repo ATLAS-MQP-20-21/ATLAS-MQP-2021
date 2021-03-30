@@ -25,7 +25,7 @@ ros::Subscriber matrix_listener;
 std_msgs::Float64MultiArray tm;
 const int X = 0, Y = 1, Z = 2, RGB = 3; //constants for readability
 bool haveMatrix = false;
-int filterThreshold = 0; //don't know what these units are
+double filterThreshold = 0; //don't know what these units are
 
 
 void filterFunction(const sensor_msgs::PointCloud2& cloud_in){
@@ -71,47 +71,73 @@ void filterFunction(const sensor_msgs::PointCloud2& cloud_in){
     //     strdata += std::to_string(cloud_in.fields[i].count);
         // ROS_INFO_STREAM(strdata);    }
 
-    std::vector<int> newData = {};
+    std::vector<unsigned char> newData = {};
     if (haveMatrix){
+        ROS_INFO_STREAM("haveMatrix is true");
         int i;
         int numFields = cloud_in.fields.size();
         for(i = 0; i < cloud_in.data.size()/numFields; i += numFields){
             //get points
-            double point_x = (double)(cloud_in.data[i+X]);
-            double point_y = (double)(cloud_in.data[i+Y]);
-            double point_z = (double)(cloud_in.data[i+Z]);
-            double point_rgb = (double)(cloud_in.data[i+RGB]);
+            unsigned char point_x = cloud_in.data[i+X];
+            unsigned char point_y = cloud_in.data[i+Y];
+            unsigned char point_z = cloud_in.data[i+Z];
+            unsigned char point_rgb = cloud_in.data[i+RGB];
 
             //transform points
             //multiply the transformation matrix by [x,y,z,1]
-            int new_point_x = (int)(tm.data[0]*point_x + tm.data[1]*point_y + tm.data[2]*point_z + tm.data[3]);
-            int new_point_y = (int)(tm.data[4]*point_x + tm.data[5]*point_y + tm.data[6]*point_z + tm.data[7]);
-            int new_point_z = (int)(tm.data[8]*point_x + tm.data[9]*point_y + tm.data[10]*point_z + tm.data[11]);
+            double new_point_x = tm.data[0]*point_x + tm.data[1]*point_y + tm.data[2]*point_z + tm.data[3];
+            double new_point_y = tm.data[4]*point_x + tm.data[5]*point_y + tm.data[6]*point_z + tm.data[7];
+            double new_point_z = tm.data[8]*point_x + tm.data[9]*point_y + tm.data[10]*point_z + tm.data[11];
 
-            //determine if points are less than z filter value
+            //detrmine if points are less than z filter value
+            //ROS_INFO_STREAM(std::to_string(new_point_z));
+
+            //These don't change
+            
+
+            //If z is less than threshold, replace z point with ground
             if (new_point_z < filterThreshold){
-                //if less than threshold, don't add to new point cloud, otherwise do add
-                newData.push_back(new_point_x);
-                newData.push_back(new_point_y);
-                newData.push_back(new_point_z);
-                newData.push_back(point_rgb);
+                double ground = 0; //the desired new z value (wrt origin)
+                unsigned char replaced_x = (unsigned char)(tm.data[0]*new_point_x + tm.data[4]*new_point_y + tm.data[8]*(ground - tm.data[3]));
+                unsigned char replaced_y = (unsigned char)(tm.data[1]*new_point_x + tm.data[5]*new_point_y + tm.data[9]*(ground - tm.data[7]));
+                unsigned char replaced_z = (unsigned char)(tm.data[2]*new_point_x + tm.data[6]*new_point_y + tm.data[10]*(ground - tm.data[11]));
+                ROS_INFO_STREAM("Put transformed xyz");
+                newData.push_back(replaced_x);
+                newData.push_back(replaced_y);
+                newData.push_back(replaced_z);
             }
+            //otherwise, keep original z
+            else {
+                ROS_INFO_STREAM("Put original xyz");
+                newData.push_back(point_x);
+                newData.push_back(point_y);
+                newData.push_back(point_z);
+            }
+
+            ROS_INFO_STREAM("Put RGB");
+            newData.push_back(point_rgb);
+
+
         }
 
         //convert vector to int array and store in new pc
-        int newDataArr[newData.size()];
-        for(int i = 0; i < newData.size(); i ++){
-            newDataArr[i] = newData[i];
-            ROS_INFO_STREAM(std::to_string(newData[i]));
+        // char newDataArr[newData.size()];
+
+        if (newData.size() == 0){
+            ROS_INFO_STREAM("WARNING: no points in filtered cloud");
         }
-        //z_filtered_pc.data = newData;
-        //ROS_INFO_STREAM(newData);
+        
+
+        
+        ROS_INFO_STREAM("About to set data");
+        z_filtered_pc.data = newData;
+       
 
     }
 
     // ROS_INFO_STREAM(std::to_string(cloud_in.data.size()));
 
-    //pointcloud_publisher.publish(z_filtered_pc);
+    pointcloud_publisher.publish(z_filtered_pc);
 
     ROS_INFO_STREAM("Published z-filtered point cloud");
 }
@@ -121,6 +147,7 @@ void setTransformationMatrix(const std_msgs::Float64MultiArray& msg) {
 
     haveMatrix = true;
     tm = msg;
+    ROS_INFO_STREAM("Got transformation matrix and stored it");
 }
 
 
