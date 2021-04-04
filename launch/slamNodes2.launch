@@ -4,6 +4,7 @@
         <remap from="image" to="image_rect"/>
         </node>
     <node pkg="ATLAS_MQP_21" name="CoordinateTransformNode" type ="CoordinateTransformNode"/>
+    <remap from="z_filtered_pc" to="filtered_cloud2" />
     <include file="$(find tough_perception_common)/launch/octomap.launch"/>
     
 </launch>
