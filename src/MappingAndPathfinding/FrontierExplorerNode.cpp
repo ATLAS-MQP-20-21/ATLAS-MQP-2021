@@ -9,7 +9,11 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Transform.h"
 #include "sensor_msgs/PointCloud2.h"
+#include "nav_msgs/OccupancyGrid.h"
 #include <vector>
+#include <array>
+
+//#include "home/anir/catkin_ws/src/tough/tough_common/include/tough_common/robot_state.h"
 
 //find all includes (sensor messages as well)
 
@@ -22,18 +26,41 @@ ros::Publisher pointcloud_publisher;
 ros::Subscriber occupancy_grid_listener;
 ros::Subscriber robot_pose_listener;
 
-void chooseFrontier(const nav_msgs::OcccupancyGrid& ocupancyList) {
+int * createOccupancyArray(int data[], int rowLength){
+    // make sure data can be divided by rosLength evenly
+    int dataSize = sizeof(data)/sizeof(*data);
+    if(dataSize % rowLength != 0){
+        ROS_INFO_STREAM("WARNING: Data can't be evenly distributed into array wtih given row length");
+    }
+    //
+
+    //int a[7];
+    //std::cout << "Length of array = " << (sizeof(a)/sizeof(*a)) << std::endl;
+
+    int array[rowLength][dataSize/rowLength];
+    for(int i = 0; i < dataSize; i++){
+        array[i%rowLength][i/rowLength] = data[i];
+    }
+    return array*;
+}
+
+
+void chooseFrontier(const nav_msgs::OccupancyGrid& occupancyList) {
     //turn list into array
-    rowLength = occupancyList.info.width; //this might be height...
-    int occupancyArray[][] = createOccupancyArray(occupancyList.data, rowLength)
+    ROS_INFO_STREAM("Turn list into array, hopefully not transpose");
+    int rowLength = occupancyList.info.width; //this might be height...
+    int *occupancyArray[][occupancyList.data.size()/rowLength] = createOccupancyArray(occupancyList.data, rowLength);
 
     //cluster the frontiers
+    ROS_INFO_STREAM("Cluster the frontier");
     std::vector<std::vector<std::array<int, 2>>> frontiers = findFrontiers(occupancyArray);
 
     //find centroids of frontiers
-    std::vector<std::array<int, 2>> centroids = getCentroids(frontiers)
+    ROS_INFO_STREAM("Get centroids of frontiers");
+    std::vector<std::array<int, 2>> centroids = getCentroids(frontiers);
 
     //choose frontier
+    ROS_INFO_STREAM("Choose frontiers");
     std::array<int, 2> closest = centroids[0];
     float smallestDistance = distance(centroids[0]);
     for(c: centroids){
@@ -50,18 +77,6 @@ void chooseFrontier(const nav_msgs::OcccupancyGrid& ocupancyList) {
     
 }
 
-int[][] createOccupancyArray(int[] data, int rowLength){
-    // make sure data can be divided by rosLength evenly
-    if(data.size()%rowLength != 0){
-        ROS_INFO_STREAM("WARNING: Data can't be evenly distributed into array wtih given row length");
-    }
-    //
-    int array[rowLength][data.size/rowLength];
-    for(int i = 0; i < data.size(); i++){
-        array[i%rowLength][i/rowLength] = data[i];
-    }
-    return array;
-}
 
 std::vector<std::vector<std::array<int, 2>>> findFrontiers(int[][] grid){
     // std::vector<std::array<int, 2>> newFrontierCluster = {};
@@ -87,6 +102,7 @@ std::vector<std::vector<std::array<int, 2>>> findFrontiers(int[][] grid){
                 }
             }
             if(newFrontierCluster.size > 0){
+                ROS_INFO_STREAM("Found new frontier cluster");
                 returnVector.push_back(newFrontierCluster);
             }
         }
@@ -116,11 +132,17 @@ std::vector<std::array<int, 2>> getCentroids(std::vector<std::vector<std::array<
     int xTotal = 0;
     int yTotal = 0;
     int numFronts = frontiers.size();
-    for(int i = 0; i < frontiers.size(); i++){
+    for(int i = 0; i < numFronts; i++){
+        array<int,2> centroid;
+        xTotal = 0;
+        yTotal = 0;
         for(int j = 0; j < i.size(); j++){
             xTotal += frontiers[i][j][0];
             yTotal += frontiers[i][j][1];
         }
+        centroid[0] = xTotal / i.size();
+        centroid[1] = yTotal / i.size();
+        centroids[i] = centroid;
         //add in functionality to account for all centroids
     }
 
@@ -146,7 +168,7 @@ float distance(std::array<int, 2> centroid){
     float x2 = robot_pose[0];
     float y2 = robot_pose[1];
 
-    return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
+    return std::sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 }
 
 void remember_pose(geometry_msgs::Pose pose){
@@ -165,7 +187,7 @@ int main(int argc, char *argv[])
     //pointcloud_publisher = n.advertise<sensor_msgs::PointCloud2>("ideal_goal", 1000); 
 
     occupancy_grid_listener = n.subscribe("projected_map", 1000, chooseFrontier);
-    robot_pose_listener = n.subscribe("???", 1000, remember_pose)
+    robot_pose_listener = n.subscribe("???", 1000, remember_pose);
 
     ROS_INFO_STREAM("Starting Spin");
     ros::spin();

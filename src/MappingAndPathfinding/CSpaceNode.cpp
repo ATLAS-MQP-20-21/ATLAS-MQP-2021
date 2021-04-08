@@ -10,6 +10,8 @@
 #include "geometry_msgs/Transform.h"
 #include "sensor_msgs/PointCloud2.h"
 #include <vector>
+#include "home/anir/catkin_ws/src/tough/tough_common/include/tough_common/robot_state.h"
+
 
 //find all includes (sensor messages as well)
 

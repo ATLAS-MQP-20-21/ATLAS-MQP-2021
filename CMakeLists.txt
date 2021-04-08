@@ -159,6 +159,15 @@ add_dependencies(Z_Filter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_
 target_link_libraries(Z_Filter ${catkin_LIBRARIES})
 
 
+add_executable(FrontierExplorerNode src/MappingAndPathfinding/FrontierExplorerNode.cpp src/MappingAndPathfinding/FrontierExplorerNode.h)
+add_dependencies(FrontierExplorerNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(FrontierExplorerNode ${catkin_LIBRARIES})
+
+#add_executable(CSpaceNode src/MappingAndPathfinding/CSpaceNode.h)
+#add_dependencies(CSpaceNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#target_link_libraries(CSpaceNode ${catkin_LIBRARIES})
+
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
