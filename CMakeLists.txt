@@ -163,7 +163,7 @@ add_executable(FrontierExplorerNode src/MappingAndPathfinding/FrontierExplorerNo
 add_dependencies(FrontierExplorerNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(FrontierExplorerNode ${catkin_LIBRARIES})
 
-#add_executable(CSpaceNode src/MappingAndPathfinding/CSpaceNode.h)
+#add_executable(CSpaceNode src/MappingAndPathfinding/CSpaceNode.cpp src/MappingAndPathfinding/CSpaceNode.h)
 #add_dependencies(CSpaceNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #target_link_libraries(CSpaceNode ${catkin_LIBRARIES})
 
