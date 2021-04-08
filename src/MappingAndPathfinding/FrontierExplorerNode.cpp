@@ -26,30 +26,44 @@ ros::Publisher pointcloud_publisher;
 ros::Subscriber occupancy_grid_listener;
 ros::Subscriber robot_pose_listener;
 
-int * createOccupancyArray(int data[], int rowLength){
-    // make sure data can be divided by rosLength evenly
-    int dataSize = sizeof(data)/sizeof(*data);
-    if(dataSize % rowLength != 0){
-        ROS_INFO_STREAM("WARNING: Data can't be evenly distributed into array wtih given row length");
-    }
-    //
+// int * createOccupancyArray(int data[], int rowLength){
+//     // make sure data can be divided by rosLength evenly
+//     int dataSize = sizeof(data)/sizeof(*data);
+//     if(dataSize % rowLength != 0){
+//         ROS_INFO_STREAM("WARNING: Data can't be evenly distributed into array wtih given row length");
+//     }
+//     //
 
-    //int a[7];
-    //std::cout << "Length of array = " << (sizeof(a)/sizeof(*a)) << std::endl;
-
-    int array[rowLength][dataSize/rowLength];
-    for(int i = 0; i < dataSize; i++){
-        array[i%rowLength][i/rowLength] = data[i];
-    }
-    return array*;
-}
+//     //int a[7];
+//     //std::cout << "Length of array = " << (sizeof(a)/sizeof(*a)) << std::endl;
+//     int *array = new int[rowLength][dataSize/rowLength];
+//     // int array[rowLength][dataSize/rowLength];
+//     for(int i = 0; i < dataSize; i++){
+//         array[i%rowLength][i/rowLength] = data[i];
+//     }
+//     return array;
+// }
 
 
 void chooseFrontier(const nav_msgs::OccupancyGrid& occupancyList) {
     //turn list into array
     ROS_INFO_STREAM("Turn list into array, hopefully not transpose");
     int rowLength = occupancyList.info.width; //this might be height...
-    int *occupancyArray[][occupancyList.data.size()/rowLength] = createOccupancyArray(occupancyList.data, rowLength);
+    
+    //make occupancyList.data into array
+    int dataSize = occupancyList.data.size();
+    if(dataSize % rowLength != 0){
+        ROS_INFO_STREAM("WARNING: Data can't be evenly distributed into array wtih given row length");
+    }
+    
+    const int dsOverrl = dataSize/rowLength;
+    int occupancyArray[rowLength][dsOverrl];
+    // int array[rowLength][dataSize/rowLength];
+    for(int i = 0; i < dataSize; i++){
+        occupancyArray[i%rowLength][i/rowLength] = occupancyList.data[i];
+    }
+    
+    //int *occupancyArray[][occupancyList.data.size()/rowLength] = createOccupancyArray(occupancyList.data, rowLength);
 
     //cluster the frontiers
     ROS_INFO_STREAM("Cluster the frontier");
