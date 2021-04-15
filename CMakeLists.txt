@@ -20,6 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
   tough_controller_interface
   tough_kinematics
   tough_perception_common
+  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -157,7 +158,6 @@ target_link_libraries(MapperNode ${catkin_LIBRARIES})
 add_executable(Z_Filter src/Filtering/Z_Filter.cpp src/Filtering/Z_Filter.h)
 add_dependencies(Z_Filter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(Z_Filter ${catkin_LIBRARIES})
-
 
 add_executable(FrontierExplorerNode src/MappingAndPathfinding/FrontierExplorerNode.cpp src/MappingAndPathfinding/FrontierExplorerNode.h)
 add_dependencies(FrontierExplorerNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
