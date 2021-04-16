@@ -7,6 +7,7 @@ import rospy
 import roslib
 from geometry_msgs.msg import Pose, Point
 from nav_msgs.msg import OccupancyGrid
+from std_msgs.msg import Bool
 #include "FrontierExplorerNode.h"
 
 #include <iostream>
@@ -200,6 +201,7 @@ def chooseFrontier(occupancyList):
     #publish centroid of chosen frontier
     rospy.loginfo("Publishing")
     point_publisher.publish(ideal_goal)
+    lidar_publisher.publish(False)
 
 #done?
 if __name__ == '__main__':
@@ -208,6 +210,8 @@ if __name__ == '__main__':
     point_publisher = rospy.Publisher('ideal_goal', Point)
     rospy.init_node('frontier_explorer_node')
     rate = rospy.Rate(10)
+    #    rostopic pub /atlas/pause_pointcloud std_msgs/Bool false
+    lidar_publisher = rospy.Publisher('atlas/pause_pointcloud', Bool)
 
     occupancy_grid_listener = rospy.Subscriber("projected_map", OccupancyGrid, chooseFrontier)
 
